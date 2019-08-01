@@ -67,21 +67,31 @@ export default {
   },
   methods: {
     // 获取数据
-    getUserData (pagenum = 1, query = '') {
-      this.$axios
-        .get('users', {
-          params: {
-            query,
-            pagenum,
-            pagesize: 2
-          }
-        })
-        .then(res => {
-          // console.log(res)
-          this.userData = res.data.data.users
-          this.total = res.data.data.total
-          this.pagenum = res.data.data.pagenum
-        })
+    async getUserData (pagenum = 1, query = '') {
+      let res = await this.$axios.get('users', {
+        params: {
+          query,
+          pagenum,
+          pagesize: 2
+        }
+      })
+      this.userData = res.data.data.users
+      this.total = res.data.data.total
+      this.pagenum = res.data.data.pagenum
+      // this.$axios
+      //   .get('users', {
+      //     params: {
+      //       query,
+      //       pagenum,
+      //       pagesize: 2
+      //     }
+      //   })
+      //   .then(res => {
+      //     // console.log(res)
+      // this.userData = res.data.data.users
+      // this.total = res.data.data.total
+      // this.pagenum = res.data.data.pagenum
+      //   })
     },
     // 页数改变
     currentChange (currentPage) {
@@ -100,104 +110,137 @@ export default {
       this.$refs.addUserRef.resetFields()
     },
     // 添加用户
-    addUsers () {
-      this.$axios.post('users', this.addForm).then(res => {
-        if (res.data.meta.status === 201) {
-          this.dialogAddFormVisible = false
-          this.$message({
-            message: '添加用户成功',
-            type: 'success',
-            duration: 800
-          })
-        }
-        this.getUserData(1)
-      })
+    async addUsers () {
+      let res = await this.$axios.post('users', this.addForm)
+      if (res.data.meta.status === 201) {
+        this.dialogAddFormVisible = false
+        this.$message({
+          message: '添加用户成功',
+          type: 'success',
+          duration: 800
+        })
+      }
+      this.getUserData(1)
+      // this.$axios.post('users', this.addForm).then(res => {
+      // if (res.data.meta.status === 201) {
+      //   this.dialogAddFormVisible = false
+      //   this.$message({
+      //     message: '添加用户成功',
+      //     type: 'success',
+      //     duration: 800
+      //   })
+      // }
+      // this.getUserData(1)
+      // })
     },
     // 改变状态
     /* eslint-disable */
-    changeState(row) {
+    async changeState(row) {
       let { id, mg_state } = row
-      this.$axios.put(`users/${id}/state/${mg_state}`).then(res => {
-        if (res.data.meta.status === 200) {
-          // 1. 提示
-          this.$message({
-            message: '更新状态成功',
-            type: 'success',
-            duration: 800
-          })
-        }
-      })
+      let res = await this.$axios.put(`users/${id}/state/${mg_state}`)
+      if (res.data.meta.status === 200) {
+        // 1. 提示
+        this.$message({
+          message: '更新状态成功',
+          type: 'success',
+          duration: 800
+        })
+      }
+      // this.$axios.put(`users/${id}/state/${mg_state}`).then(res => {
+      //   if (res.data.meta.status === 200) {
+      //     // 1. 提示
+      //     this.$message({
+      //       message: '更新状态成功',
+      //       type: 'success',
+      //       duration: 800
+      //     })
+      //   }
+      // })
     },
     //删除用户
-    delUser(id) {
-      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$axios.delete(`users/${id}`).then(res => {
-            if (res.data.meta.status === 200) {
-              this.$message({
-                type: 'success',
-                message: '删除成功!',
-                duration: 800
-              })
-              this.getUserData()
-            }
-          })
+    async delUser(id) {
+      try {
+        await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除',
-            duration: 800
-          })
-        })
-    },
-    // 显示编辑模态框
-    showEditUser(row) {
-      let { id, username, mobile, email } = row
-      this.$axios.get(`users/${id}`).then(res => {
-        this.dialogEditFormVisible = true
-        this.editForm = res.data.data
-      })
-    },
-    // 编辑用户
-    editUser() {
-      let { id, mobile, email } = this.editForm
-      this.$axios.put(`users/${id}`, { mobile, email }).then(res => {
+        let res = await this.$axios.delete(`users/${id}`)
         if (res.data.meta.status === 200) {
-          this.dialogEditFormVisible = false
           this.$message({
             type: 'success',
-            message: '更新状态成功!',
+            message: '删除成功!',
             duration: 800
           })
-          this.getUserData(this.pagenum)
+          this.getUserData()
         }
-      })
+      } catch (error) {
+        this.$message({
+          type: 'info',
+          message: '已取消删除',
+          duration: 800
+        })
+      }
+    },
+    //   this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   })
+    //     .then(() => {
+    //       this.$axios.delete(`users/${id}`).then(res => {
+    //         if (res.data.meta.status === 200) {
+    //           this.$message({
+    //             type: 'success',
+    //             message: '删除成功!',
+    //             duration: 800
+    //           })
+    //           this.getUserData()
+    //         }
+    //       })
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: 'info',
+    //         message: '已取消删除',
+    //         duration: 800
+    //       })
+    //     })
+    // },
+    // 显示编辑模态框
+    async showEditUser(row) {
+      let { id, username, mobile, email } = row
+      let res = await this.$axios.get(`users/${id}`)
+      this.dialogEditFormVisible = true
+      this.editForm = res.data.data
+    },
+    // 编辑用户
+    async editUser() {
+      let { id, mobile, email } = this.editForm
+      let res = await this.$axios.put(`users/${id}`, { mobile, email })
+      if (res.data.meta.status === 200) {
+        this.dialogEditFormVisible = false
+        this.$message({
+          type: 'success',
+          message: '修改成功!',
+          duration: 800
+        })
+        this.getUserData(this.pagenum)
+      }
     },
     // 分配角色
 
-    showAssignRoleForm(row) {
-      this.$axios.get('roles').then(res => {
-        // console.log(res)
-        this.rolesList = res.data.data
-      })
+    async showAssignRoleForm(row) {
+      let res = await this.$axios.get('roles')
+      this.rolesList = res.data.data
       const { id } = row
-      // this.$axios.get(`users/${id}`).then(res => {
-      //   // console.log(res)
-      //   this.assignRoleForm = res.data.data
-      //   var rid = res.data.data.rid
-      //   // console.log(rid)
-      //   this.$axios.put(`users/${id}/role`, { rid }).then(res => {
-      //     console.log(res);
+      let res1 = await this.$axios.get(`users/${id}`)
+      this.assignRoleForm = res1.data.data
+      let rid = res1.data.data.rid
+      let res2 = await this.$axios.put(`users/${id}/role`, { rid })
+      console.log(res2)
 
-      //   })
-      // })
       this.dialogAssignRoleVisible = true
-      // this.$axios.
     }
   }
 }

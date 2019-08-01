@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   data () {
     return {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     startLogin () {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(async (valid) => {
         if (!valid) {
           this.$message({
             message: '校验失败',
@@ -67,24 +67,23 @@ export default {
           })
           return
         }
+        let res = await this.$axios.post('http://localhost:8888/api/private/v1/login', this.loginForm)
 
-        axios.post('http://localhost:8888/api/private/v1/login', this.loginForm).then(res => {
-          if (res.data.meta.status === 200) {
-            localStorage.setItem('token', res.data.data.token)
-            this.$message({
-              message: '登录成功',
-              type: 'success',
-              duration: 800
-            })
-            this.$router.push('/home')
-          } else {
-            this.$message({
-              message: '用户名或密码有误',
-              type: 'error',
-              duration: 800
-            })
-          }
-        })
+        if (res.data.meta.status === 200) {
+          localStorage.setItem('token', res.data.data.token)
+          this.$message({
+            message: '登录成功',
+            type: 'success',
+            duration: 800
+          })
+          this.$router.push('/home')
+        } else {
+          this.$message({
+            message: '用户名或密码有误',
+            type: 'error',
+            duration: 800
+          })
+        }
       })
     },
     resetForm () {
