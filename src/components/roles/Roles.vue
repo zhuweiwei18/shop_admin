@@ -1,14 +1,11 @@
-<template>
-  <div>
-    roles
-  </div>
+<template src="./Roles.html">
+
 </template>
 
-<script>
-export default {
+<script src="./Roles.js">
+/* eslint-disable */ 
 
-}
 </script>
 
-<style>
+<style scoped src="./Roles.less" lang="less">
 </style>

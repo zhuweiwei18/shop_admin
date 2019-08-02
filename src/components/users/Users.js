@@ -23,7 +23,7 @@ export default {
       // 编辑
       dialogEditFormVisible: false,
       editForm: {
-        id: '',
+        id: 0,
         username: '',
         email: '',
         mobile: ''
@@ -32,7 +32,7 @@ export default {
       dialogAssignRoleVisible: false,
       assignRoleForm: {
         username: 'lay',
-        id: '',
+        id: 0,
         rid: ''
       },
       rolesList: [],
@@ -64,6 +64,7 @@ export default {
   },
   created () {
     this.getUserData()
+    this.loadRoleList()
   },
   methods: {
     // 获取数据
@@ -208,11 +209,13 @@ export default {
     //     })
     // },
     // 显示编辑模态框
-    async showEditUser(row) {
+    showEditUser(row) {
       let { id, username, mobile, email } = row
-      let res = await this.$axios.get(`users/${id}`)
       this.dialogEditFormVisible = true
-      this.editForm = res.data.data
+      this.editForm.username = username
+      this.editForm.id = id
+      this.editForm.mobile = mobile
+      this.editForm.email = email
     },
     // 编辑用户
     async editUser() {
@@ -225,22 +228,34 @@ export default {
           message: '修改成功!',
           duration: 800
         })
-        this.getUserData(this.pagenum)
+        this.getUserData(this.pagenum, this.input3)
       }
     },
-    // 分配角色
 
-    async showAssignRoleForm(row) {
+    // 分配角色
+    // 显示角色列表
+    async loadRoleList() {
       let res = await this.$axios.get('roles')
       this.rolesList = res.data.data
-      const { id } = row
-      let res1 = await this.$axios.get(`users/${id}`)
-      this.assignRoleForm = res1.data.data
-      let rid = res1.data.data.rid
-      let res2 = await this.$axios.put(`users/${id}/role`, { rid })
-      console.log(res2)
-
+    },
+    // 显示分配模态框
+    async showAssignRoleForm(row) {
       this.dialogAssignRoleVisible = true
+      const { id, username } = row
+      let res = await this.$axios.get(`users/${id}`)
+      let rid = res.data.data.rid
+      this.assignRoleForm.id = id
+      this.assignRoleForm.username = username
+      this.assignRoleForm.rid = rid == -1 ? '' : rid
     }
+    // 分配角色
+    // async assignRole() {
+    //   const { id, rid } = this.assignRoleForm
+    //   let res = await this.$axios.put(`users/${id}/role`, {
+    //     rid
+    //   })
+    //   console.log(res)
+    //   console.log('111')
+    // }
   }
 }
