@@ -247,15 +247,15 @@ export default {
       this.assignRoleForm.id = id
       this.assignRoleForm.username = username
       this.assignRoleForm.rid = rid == -1 ? '' : rid
-    }
+    },
     // 分配角色
-    // async assignRole() {
-    //   const { id, rid } = this.assignRoleForm
-    //   let res = await this.$axios.put(`users/${id}/role`, {
-    //     rid
-    //   })
-    //   console.log(res)
-    //   console.log('111')
-    // }
+    async assignRole() {
+      const { id, rid } = this.assignRoleForm
+      let res = await this.$axios.put(`users/${id}/role`, {
+        rid
+      })
+      console.log(res)
+      console.log('111')
+    }
   }
 }

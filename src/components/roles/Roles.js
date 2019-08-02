@@ -59,7 +59,7 @@ export default {
       this.dialogAssignRightsVisible = true
       let keys = []
       this.roleId = row.id
-      this.row.children.forEach(item1 => {
+      row.children.forEach(item1 => {
         item1.children.forEach(item2 => {
           item2.children.forEach(item3 => {
             keys.push(item3.id)
@@ -78,8 +78,15 @@ export default {
       let res = await this.$axios.post(`roles/${this.roleId}/rights`, {
         rids: key.join(',')
       })
-      console.log(res)
-      this.loadRolesData()
+      if (res.data.meta.status === 200) {
+        this.$message({
+          message: '授权成功',
+          type: 'success',
+          duration: 800
+        })
+        this.dialogAssignRightsVisible = false
+        this.loadRolesData()
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
 </template>
 
 <script src="./Roles.js">
-/* eslint-disable */ 
+/* eslint-disable */
 
 </script>
 
