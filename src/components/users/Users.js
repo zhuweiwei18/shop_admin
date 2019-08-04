@@ -242,20 +242,29 @@ export default {
     async showAssignRoleForm(row) {
       this.dialogAssignRoleVisible = true
       const { id, username } = row
-      let res = await this.$axios.get(`users/${id}`)
-      let rid = res.data.data.rid
       this.assignRoleForm.id = id
       this.assignRoleForm.username = username
-      this.assignRoleForm.rid = rid == -1 ? '' : rid
+      let res = await this.$axios.get(`users/${id}`)
+      console.log(res)
+      this.assignRoleForm.rid =
+        res.data.data.rid === -1 ? '' : res.data.data.rid
     },
     // 分配角色
     async assignRole() {
       const { id, rid } = this.assignRoleForm
+      console.log(rid)
+
       let res = await this.$axios.put(`users/${id}/role`, {
         rid
       })
-      console.log(res)
-      console.log('111')
+      // console.log(res)
+      this.dialogAssignRoleVisible = false
+      this.$message({
+        type: 'success',
+        message: '分配角色成功!',
+        duration: 800
+      })
+      this.getUserData(this.pagenum, this.input3)
     }
   }
 }

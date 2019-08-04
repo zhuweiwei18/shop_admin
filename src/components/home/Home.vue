@@ -33,16 +33,24 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-          <el-submenu index="1">
+          <el-submenu
+            :index="item1.id + ''"
+            v-for="item1 in loadMenuList"
+            :key="item1.id"
+          >
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{ item1.authName }}</span>
             </template>
-            <el-menu-item index="/users">
-              <span slot="title">用户列表</span>
+            <el-menu-item
+              :index="'/' + item2.path"
+              v-for="item2 in item1.children"
+              :key="item2.id"
+            >
+              <span slot="title">{{ item2.authName }}</span>
             </el-menu-item>
           </el-submenu>
-          <el-submenu index="2">
+          <!-- <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>权限管理</span>
@@ -53,7 +61,7 @@
             <el-menu-item index="/rights">
               <span slot="title">权限列表</span>
             </el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
 
         </el-menu>
       </el-aside>
@@ -66,8 +74,19 @@
 
 <script>
 export default {
+  created () {
+    this.loadMenuData()
+  },
+  data () {
+    return {
+      loadMenuList: []
+    }
+  },
   methods: {
     getIndex () {
+      if (this.$route.path === '/goods-add') {
+        return '/goods'
+      }
       return this.$route.path
     },
     async logout () {
@@ -91,7 +110,7 @@ export default {
           duration: 800
         })
       }
-    }
+    },
     // logout () {
     //   this.$confirm('此操作将退出该账户, 是否继续?', '提示', {
     //     confirmButtonText: '确定',
@@ -113,6 +132,11 @@ export default {
     //     })
     //   })
     // }
+    async loadMenuData () {
+      let res = await this.$axios.get('menus')
+      this.loadMenuList = res.data.data
+      // console.log(res)
+    }
   }
 }
 </script>

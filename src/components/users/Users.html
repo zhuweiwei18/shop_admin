@@ -86,12 +86,12 @@
 
   <!-- 分配角色 -->
   <el-dialog title="分配角色" :visible.sync="dialogAssignRoleVisible">
-    <el-form :model="assignRoleForm" label-width="80px" ref="addUserRef">
+    <el-form :model="assignRoleForm" label-width="80px">
       <el-form-item label="用户名">
         <el-tag>{{ assignRoleForm.username }}</el-tag>
       </el-form-item>
       <el-form-item label="角色列表">
-        <el-select v-model="assignRoleForm.id" placeholder="请选择角色">
+        <el-select v-model="assignRoleForm.rid" placeholder="请选择角色">
           <el-option v-for="item in rolesList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
