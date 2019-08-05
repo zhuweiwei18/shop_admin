@@ -68,10 +68,12 @@ export default {
     }
   },
   created () {
-    this.loadGoodsData()
+    let page = this.$route.params.page
+    this.loadGoodsData(page)
   },
   methods: {
     currentChange (currentPage) {
+      this.$router.push('/goods/' + currentPage)
       this.loadGoodsData(currentPage)
     },
     async loadGoodsData (pagenum = 1, query = '') {

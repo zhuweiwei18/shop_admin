@@ -84,9 +84,16 @@ export default {
   },
   methods: {
     getIndex () {
-      if (this.$route.path === '/goods-add') {
+      if (this.$route.path.startsWith('/users')) {
+        return '/users'
+      }
+      if (this.$route.path.startsWith('/categories')) {
+        return '/categories'
+      }
+      if (this.$route.path.startsWith('/goods')) {
         return '/goods'
       }
+
       return this.$route.path
     },
     async logout () {

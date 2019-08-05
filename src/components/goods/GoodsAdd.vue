@@ -1,42 +1,11 @@
-<template>
-  <div>
-    <el-steps
-      :active="active"
-      finish-status="success"
-    >
-      <el-step
-        title="第一步"
-        description="基本信息"
-      ></el-step>
-      <el-step
-        title="第二步"
-        description="商品图片"
-      ></el-step>
-      <el-step
-        title="第三步"
-        description="商品内容"
-      ></el-step>
-    </el-steps>
-    <el-tabs
-      tab-position="left"
-      style="height: 200px;"
-    >
-      <el-tab-pane label="基本信息">基本信息</el-tab-pane>
-      <el-tab-pane label="商品图片">商品图片</el-tab-pane>
-      <el-tab-pane label="商品内容">商品内容</el-tab-pane>
-    </el-tabs>
-  </div>
+<template src="./GoodsAdd.html">
+
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      active: 1
-    }
-  }
-}
+<script src="./GoodsAdd.js">
+
+// vue的传值，路由传值，生命周期，双向绑定原理，闭包，原型链，业务逻辑
 </script>
 
-<style>
+<style src="./GoodsAdd.less" scoped lang="less">
 </style>

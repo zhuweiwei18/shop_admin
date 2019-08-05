@@ -63,7 +63,8 @@ export default {
     }
   },
   created () {
-    this.getUserData()
+    let page = this.$route.params.page
+    this.getUserData(page)
     this.loadRoleList()
   },
   methods: {
@@ -96,6 +97,7 @@ export default {
     },
     // 页数改变
     currentChange (currentPage) {
+      this.$router.push('/users/' + currentPage)
       this.getUserData(currentPage, this.input3)
     },
     // 搜索

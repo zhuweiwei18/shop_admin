@@ -124,12 +124,14 @@ export default {
     }
   },
   created () {
-    this.loadCataData()
+    let page = this.$route.params.page
+    this.loadCataData(page)
     this.loadCataData2()
   },
   methods: {
     // 分页
     currentChange (currentPage) {
+      this.$router.push('/categories/' + currentPage)
       this.loadCataData(currentPage)
     },
     async loadCataData (pagenum = 1, query = '') {
@@ -163,8 +165,8 @@ export default {
           type: 'success',
           message: '添加分类成功',
           duration: 800
-        }),
-          this.loadCataData()
+        })
+        this.loadCataData()
       }
     }
   }
