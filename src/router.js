@@ -1,13 +1,13 @@
 import vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from './components/home/Home'
 import Login from './components/login/login'
-import Users from './components/users/Users.vue'
-import Roles from './components/roles/Roles.vue'
-import Rights from './components/rights/Rights.vue'
-import Categories from './components/categories/Categories.vue'
-import Goods from './components/goods/Goods.vue'
-import GoodsAdd from './components/goods/GoodsAdd.vue'
+const Home = () => import('./components/home/Home')
+const Users = () => import('./components/users/Users.vue')
+const Roles = () => import('./components/roles/Roles.vue')
+const Rights = () => import('./components/rights/Rights.vue')
+const Categories = () => import('./components/categories/Categories.vue')
+const Goods = () => import('./components/goods/Goods.vue')
+const GoodsAdd = () => import('./components/goods/GoodsAdd.vue')
 
 vue.use(VueRouter)
 
