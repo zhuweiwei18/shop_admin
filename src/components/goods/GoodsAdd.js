@@ -70,7 +70,7 @@ export default {
     },
     uploadGoods (res) {
       // console.log(res)
-      this.addGoodsForm.pics.push(res.data.tmp_path)
+      this.addGoodsForm.pics.push({ pic: res.data.tmp_path })
     },
     /* eslint-disable*/
     async addGoods() {
